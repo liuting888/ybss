@@ -136,31 +136,62 @@
       width="1041px"
       class="check-dialogs"
     >
-      <p
-        class="similar"
-        v-if="activeIndex==0||activeIndex==2||activeIndex==4"
-      >社区警务平台已匹配到{{checkForm.hideData.length}}条相似数据</p>
+      <el-tooltip placement="right">
+        <div slot="content">
+          1.有相似的房屋信息，在社区警务平台选择相似房屋信息，勾选覆盖原有信息再点击通过
+          <br>2.若无相似信息或现有信息不匹配，在实体信息选择对应实体信息，点击通过
+          <br>3.重复信息可点击作废
+        </div>
+        <el-button>
+          <i class="el-icon-info"></i>
+        </el-button>
+      </el-tooltip>
+      <el-row v-if="activeIndex==0||activeIndex==2||activeIndex==4">
+        <el-form inline label-width="85px" label-position="left">
+          <el-col :lg="12" :xl="12" v-if="parentDataList.length>0">
+            <el-form-item :label="(activeIndex==0?activeList[4].name:activeList[0].name) +'：'">
+              <el-select clearable filterable v-model="parentId" size="small">
+                <el-option
+                  v-for="item in parentDataList"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+              <p
+                class="similar"
+              >社区警务平台已匹配到{{parentDataList.length}}条可参考的{{activeIndex==0?activeList[4].name:activeList[0].name}}数据</p>
+            </el-form-item>
+          </el-col>
+          <el-col :lg="12" :xl="12" v-if="checkForm.hideData.length>0">
+            <el-form-item :label="activeList[activeIndex].name+'：'">
+              <el-select
+                @change="changeContrast"
+                clearable
+                filterable
+                v-model="contrastIndex"
+                size="small"
+              >
+                <el-option
+                  v-for="item in contrastStates"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+              <p
+                class="similar"
+              >社区警务平台已匹配到{{checkForm.hideData.length}}条可参考的{{activeList[activeIndex].name}}数据</p>
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-row>
       <el-table border :data="gridData[activeIndex]" :row-class-name="tableRowClassName">
         <el-table-column property="subAudit" label="基本信息" width="200"></el-table-column>
         <el-table-column property="sq" width="400">
           <template slot="header" slot-scope="scope">
             <img class="icon" src="static/images/ybss-sq.png" alt>
             <span>社区警务平台</span>
-            <el-select
-              v-if="(activeIndex==0||activeIndex==2||activeIndex==4)&&checkForm.hideData.length>0"
-              @change="changeContrast"
-              clearable
-              filterable
-              v-model="contrastIndex"
-              size="small"
-            >
-              <el-option
-                v-for="item in contrastStates"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              ></el-option>
-            </el-select>
           </template>
         </el-table-column>
         <el-table-column property="fj" label="辅警采集" width="400">
@@ -199,13 +230,15 @@ export default {
       userInfo: "",
       activeIndex: "0",
       activeList: ybssData.activeList,
+      parentId: "",
       checked: false,
       //审核弹框表格信息
       gridData: ybssData.list,
       checkDialogVisible: false,
       // 部门下拉框
       missionStates: [],
-      contrastStates: [], //审核弹窗下拉框
+      contrastStates: [], //审核社区采集弹窗下拉框
+      parentDataList: [], //审核社区采集的上级单位弹窗下拉框
       contrastIndex: 0, //审核弹窗下拉框索引
       searchTime: "", // 查询时间
       // 列表查询参数
@@ -379,14 +412,27 @@ export default {
           vm.checkForm = data;
           vm.processContrast(0); //默认列表展示第一条数据
           vm.contrastStates = [];
+          vm.parentDataList = [];
+          vm.parentId = "";
+          //社区采集下拉框数据
           for (let i = 0; i < vm.checkForm.oldData.length; i++) {
             !vm.checkForm.oldData[i].address &&
-              (vm.checkForm.oldData[i].address = "选择");
+              (vm.checkForm.oldData[i].address = "地址不详");
             let list = {
               id: i,
               name: vm.checkForm.oldData[i].address
             };
             vm.contrastStates.push(list);
+          }
+          //对应上级下拉框数据
+          for (let i = 0; i < vm.checkForm.parentData.length; i++) {
+            !vm.checkForm.parentData[i].address &&
+              (vm.checkForm.parentData[i].address = "地址不详");
+            let list = {
+              id: vm.checkForm.parentData[i].id,
+              name: vm.checkForm.parentData[i].address
+            };
+            vm.parentDataList.push(list);
           }
           vm.checkDialogVisible = true;
           fjPublic.closeLoad();
@@ -461,7 +507,8 @@ export default {
             state: state,
             checkId: vm.userInfo.userId,
             tableName: vm.activeList[this.activeIndex].tableName,
-            hideData: JSON.stringify(vm.checkForm.hideData[vm.contrastIndex])
+            hideData: JSON.stringify(vm.checkForm.hideData[vm.contrastIndex]),
+            parentId: vm.parentId //实有单位和实有房屋父级元素ID
           },
           dataType: "json",
           success: function(data) {
@@ -615,11 +662,23 @@ export default {
   }
 }
 .check-dialogs {
-  .similar {
+  .el-tooltip {
     position: absolute;
-    top: 22px;
-    left: 218px;
-    color: rgba(0, 95, 183, 1);
+    top: 26px;
+    left: 208px;
+    padding: 0;
+    border: none;
+    i {
+      color: #1890ff;
+    }
+  }
+  .similar {
+    color: #f5222d;
+    line-height: 20px;
+    font-size: 12px;
+  }
+  .el-select {
+    width: 300px;
   }
   .el-dialog__title {
     width: 180px;
@@ -709,7 +768,9 @@ export default {
   text-align: center;
   margin-top: 20px;
   .footer-checkbox {
-    margin-bottom: 12px;
+    position: absolute;
+    margin-left: 300px;
+    margin-top: 8px;
   }
 }
 .footer-info {
