@@ -146,7 +146,7 @@
           <i class="el-icon-info"></i>
         </el-button>
       </el-tooltip>
-      <el-row v-if="activeIndex==0||activeIndex==2||activeIndex==4">
+      <el-row v-if="activeIndex!=3">
         <el-form inline label-width="85px" label-position="left">
           <el-col :lg="12" :xl="12" v-if="parentDataList.length>0">
             <el-form-item :label="(activeIndex==0?activeList[4].name:activeList[0].name) +'：'">
@@ -164,7 +164,10 @@
             </el-form-item>
           </el-col>
           <el-col :lg="12" :xl="12" v-if="checkForm.hideData.length>0">
-            <el-form-item :label="activeList[activeIndex].name+'：'">
+            <el-form-item
+              :label="activeList[activeIndex].name+'：'"
+              v-if="activeIndex==0||activeIndex==2||activeIndex==4"
+            >
               <el-select
                 @change="changeContrast"
                 clearable
@@ -199,6 +202,17 @@
             <img class="icon" src="static/images/ybss-fj.png" alt>
             <span>辅警采集</span>
           </template>
+          <template slot-scope="scope">
+            <el-input
+              v-if="activeIndex==1&&scope.row.subAudit=='楼栋祥址'"
+              v-model="checkForm.newData.address"
+              clearable
+              placeholder="请输入楼栋祥址"
+              size="small"
+              class="search-input"
+            ></el-input>
+            <p v-else>{{scope.row.fj}}</p>
+          </template>
         </el-table-column>
       </el-table>
       <div class="footer-info">
@@ -225,6 +239,7 @@ export default {
     return {
       breadData: [
         { name: "当前位置:", path: "" },
+        { name: "工作管理", path: "" },
         { name: "一标三实", path: "" }
       ],
       userInfo: "",
@@ -497,6 +512,9 @@ export default {
     // 请求审核接口
     postSubmit: function(state) {
       var vm = this;
+      if (vm.activeIndex == 1 && vm.checkForm.newData.address) {
+        vm.updPeopleInfo();
+      }
       // 参数
       return new Promise((resolve, reject) => {
         $.ajax({
@@ -506,7 +524,7 @@ export default {
             id: vm.checkForm.newData.id,
             state: state,
             checkId: vm.userInfo.userId,
-            tableName: vm.activeList[this.activeIndex].tableName,
+            tableName: vm.activeList[vm.activeIndex].tableName,
             hideData: JSON.stringify(vm.checkForm.hideData[vm.contrastIndex]),
             parentId: vm.parentId //实有单位和实有房屋父级元素ID
           },
@@ -520,16 +538,30 @@ export default {
         });
       })
         .then(res => {
+          vm.searchSign();
           vm.checkDialogVisible = false;
         })
         .catch(function(reason) {
-          // vm.$message({
-          //   type: "success",
-          //   message: "审核成功!"
-          // });
           vm.searchSign();
           vm.checkDialogVisible = false;
         });
+    },
+    // 修改居住人员楼栋祥址
+    updPeopleInfo: function() {
+      var vm = this;
+      // 参数
+      $.ajax({
+        url: fjPublic.ajaxUrlDNN + "/updInfo",
+        type: "POST",
+        data: {
+          tableName: " T_Info_Live_People",
+          id: vm.checkForm.newData.id,
+          address: vm.checkForm.newData.address
+        },
+        dataType: "json",
+        success: function(data) {},
+        error: function(err) {}
+      });
     },
     // 获取部门单位数据
     getTeamList: function(state) {
@@ -712,6 +744,9 @@ export default {
       .cell {
         padding-left: 20px;
       }
+    }
+    .el-input{
+      width: 380px;
     }
   }
   thead tr {

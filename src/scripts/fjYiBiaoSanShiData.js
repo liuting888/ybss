@@ -339,6 +339,13 @@
                         peopleRelation: "",
                         subAudit: "人员关系",
                     }
+                    ,
+                    {
+                        fj: "",
+                        sq: "",
+                        address: "",
+                        subAudit: "楼栋祥址",
+                    }
                 ],
                 //实有单位
                 [{

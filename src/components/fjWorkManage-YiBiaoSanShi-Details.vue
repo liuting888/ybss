@@ -6,7 +6,7 @@
       </div>
       <div class="fj-block content">
         <div class="fj-block-head kaohe">
-          <p class="title fj-fl">{{breadData[2].name}}</p>
+          <p class="title fj-fl">{{breadData[3].name}}</p>
         </div>
         <div class="fj-block-body">
           <!-- 筛选区域 -->
@@ -1029,6 +1029,7 @@ export default {
     return {
       breadData: [
         { name: "当前位置:", path: "" },
+        { name: "工作管理", path: "" },
         { name: "一标三实", path: "/fjWorkManage-YiBiaoSanShi" },
         { name: "", path: "" }
       ],
@@ -1250,7 +1251,7 @@ export default {
       let vm = this;
       vm.userInfo = vm.$route.query;
       let index = vm.userInfo.index;
-      vm.breadData[2].name =
+      vm.breadData[3].name =
         vm.activeList[vm.userInfo.index].name + "信息采集表";
       vm.ruleForm = {};
       vm.randomplace = [];
