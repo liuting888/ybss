@@ -148,7 +148,7 @@
       </el-tooltip>
       <el-row v-if="activeIndex!=3">
         <el-form inline label-width="85px" label-position="left">
-          <el-col :lg="12" :xl="12" v-if="parentDataList.length>0">
+          <el-col :lg="12" :xl="12" v-if="activeIndex<3">
             <el-form-item :label="(activeIndex==0?activeList[4].name:activeList[0].name) +'：'">
               <el-select clearable filterable v-model="parentId" size="small">
                 <el-option
@@ -159,15 +159,17 @@
                 ></el-option>
               </el-select>
               <p
+                v-if="parentDataList.length>0"
                 class="similar"
               >社区警务平台已匹配到{{parentDataList.length}}条可参考的{{activeIndex==0?activeList[4].name:activeList[0].name}}数据</p>
+              <p
+                v-else
+                class="similar"
+              >社区警务平台无法匹配到可参考的{{activeIndex==0?activeList[4].name:activeList[0].name}}数据</p>
             </el-form-item>
           </el-col>
-          <el-col :lg="12" :xl="12" v-if="checkForm.hideData.length>0">
-            <el-form-item
-              :label="activeList[activeIndex].name+'：'"
-              v-if="activeIndex==0||activeIndex==2||activeIndex==4"
-            >
+          <el-col :lg="12" :xl="12" v-if="activeIndex==0||activeIndex==2||activeIndex==4">
+            <el-form-item :label="activeList[activeIndex].name+'：'">
               <el-select
                 @change="changeContrast"
                 clearable
@@ -183,8 +185,10 @@
                 ></el-option>
               </el-select>
               <p
+                v-if="checkForm.hideData.length>0"
                 class="similar"
               >社区警务平台已匹配到{{checkForm.hideData.length}}条可参考的{{activeList[activeIndex].name}}数据</p>
+              <p v-else class="similar">社区警务平台无法匹配到可参考的{{activeList[activeIndex].name}}数据</p>
             </el-form-item>
           </el-col>
         </el-form>
@@ -424,6 +428,8 @@ export default {
         },
         dataType: "json",
         success: function(data) {
+          // let arr = Object.keys(data.oldData[0]);
+          // console.log(arr.length == 0); //true
           vm.checkForm = data;
           vm.processContrast(0); //默认列表展示第一条数据
           vm.contrastStates = [];
@@ -506,7 +512,19 @@ export default {
             });
           });
       } else {
-        vm.postSubmit(state);
+        if (vm.activeIndex == 0 && vm.parentId == "") {
+          return vm.$message({
+            type: "info",
+            message: "请关联实体信息"
+          });
+        }
+        if (vm.activeIndex == 2 && vm.parentId == "") {
+          return vm.$message({
+            type: "info",
+            message: "请关联实有房屋"
+          });
+        }
+         vm.postSubmit(state);
       }
     },
     // 请求审核接口
@@ -530,9 +548,15 @@ export default {
           },
           dataType: "json",
           success: function(data) {
+            if (data.resultCode == 1) {
+              vm.$message({ type: "success", message: data.resultInfo });
+            } else {
+              vm.$message({ type: "warning", message: data.resultInfo });
+            }
             resolve(data);
           },
           error: function(err) {
+            vm.$message({ type: "warning", message: "审核失败！！！" });
             reject(err);
           }
         });
@@ -745,7 +769,7 @@ export default {
         padding-left: 20px;
       }
     }
-    .el-input{
+    .el-input {
       width: 380px;
     }
   }

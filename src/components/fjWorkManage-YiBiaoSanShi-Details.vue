@@ -97,11 +97,18 @@
                   </el-col>
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="road" label="街路巷">
-                      <el-input
+                      <el-select
                         v-model="ruleForm.road"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入街路巷（必填）'"
-                      ></el-input>
+                        :placeholder="userInfo.state == 1?'':'请选择街路巷（必选）'"
+                      >
+                        <el-option
+                          v-for="item in roadList"
+                          :key="item.id"
+                          :label="item.label"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -446,11 +453,18 @@
                   </el-col>
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="road" label="街路巷">
-                      <el-input
+                      <el-select
                         v-model="ruleForm.road"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入街路巷（必填）'"
-                      ></el-input>
+                        :placeholder="userInfo.state == 1?'':'请选择街路巷（必选）'"
+                      >
+                        <el-option
+                          v-for="item in roadList"
+                          :key="item.id"
+                          :label="item.label"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -716,11 +730,7 @@
                 <el-row>
                   <el-col :span="12">
                     <el-form-item label="市">
-                      <el-input
-                        v-model="ruleForm.county"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入市'"
-                      ></el-input>
+                      <el-input v-model="ruleForm.county" disabled></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
@@ -780,11 +790,18 @@
                 <el-row>
                   <el-col :span="12">
                     <el-form-item label="街路巷">
-                      <el-input
+                      <el-select
                         v-model="ruleForm.road"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入街路巷'"
-                      ></el-input>
+                        :placeholder="userInfo.state == 1?'':'请选择街路巷（必选）'"
+                      >
+                        <el-option
+                          v-for="item in roadList"
+                          :key="item.id"
+                          :label="item.label"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
@@ -1037,7 +1054,8 @@ export default {
       userInfo: {},
       ruleForm: {
         name: "",
-        randomplace: []
+        randomplace: [],
+        county: ""
       },
       randomplace: [], //抽查地址
       cityPlace: [], //城市下拉框
@@ -1045,6 +1063,7 @@ export default {
       plotsPlace: [], //街道下拉框
       dictList: [], //实体分类，单位类别，人员关系下拉框
       peopleRelationList: [], //人员关系下拉框
+      RoadList: [], //街路巷下拉框
       optionProps: {
         value: "id",
         label: "label",
@@ -1103,6 +1122,7 @@ export default {
     handleChange() {},
     changeCity() {
       this.ruleForm.city && this.getPlace(this.ruleForm.city, 1);
+      this.ruleForm.city && this.getRoadList(this.ruleForm.city);
     },
     changeStreet() {
       this.ruleForm.street && this.getPlace(this.ruleForm.street, 2);
@@ -1219,6 +1239,23 @@ export default {
         error: function(err) {}
       });
     },
+    // 获取街路巷（根据县/区获取）
+    getRoadList: function(id) {
+      var vm = this;
+      // 参数
+      $.ajax({
+        url: fjPublic.ajaxUrlDNN + "/getRoadList",
+        type: "POST",
+        data: {
+          id: id
+        },
+        dataType: "json",
+        success: function(data) {
+          vm.RoadList = data.list;
+        },
+        error: function(err) {}
+      });
+    },
     // 提交或者编辑数据
     postRuleForm: function() {
       let vm = this;
@@ -1257,6 +1294,7 @@ export default {
       vm.randomplace = [];
       vm.streetPlace = []; //乡镇下拉框
       vm.plotsPlace = []; //街道下拉框
+      vm.RoadList = []; //街路巷下拉框
       vm.dictList = [];
       vm.userInfo.state != 0 &&
         (vm.ruleForm = $.parseJSON(fjPublic.getLocalData("ybssItem")));
@@ -1272,6 +1310,7 @@ export default {
       index == 1 && vm.getDictList("YHZGL");
       index == 2 && vm.getDictList("DWLB");
       index == 4 && vm.getDictList("ZDY_STFL");
+      index == 4 && (vm.ruleForm.county = "湘潭市");
       index == 0 && vm.getDownDepts();
       vm.getPoliceList(vm.ruleForm.suboffice);
       vm.$refs["ruleForm"].resetFields();
