@@ -668,7 +668,18 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="24">
+                  <el-col :span="12">
+                    <el-form-item class="noBB" prop="birth" label="出生日期">
+                      <el-date-picker
+                        :disabled="userInfo.state == 1"
+                        v-model="ruleForm.birth"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        :placeholder="userInfo.state == 1?'':'请选择出生日期（必填）'"
+                      ></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
                     <el-form-item class="noBR noBB" prop="jobAndLive" label="是否从业且居住">
                       <el-select
                         :disabled="userInfo.state == 1"
@@ -1063,7 +1074,7 @@ export default {
       plotsPlace: [], //街道下拉框
       dictList: [], //实体分类，单位类别，人员关系下拉框
       peopleRelationList: [], //人员关系下拉框
-      RoadList: [], //街路巷下拉框
+      roadList: [], //街路巷下拉框
       optionProps: {
         value: "id",
         label: "label",
@@ -1251,7 +1262,7 @@ export default {
         },
         dataType: "json",
         success: function(data) {
-          vm.RoadList = data.list;
+          vm.roadList = data.list;
         },
         error: function(err) {}
       });
@@ -1294,7 +1305,7 @@ export default {
       vm.randomplace = [];
       vm.streetPlace = []; //乡镇下拉框
       vm.plotsPlace = []; //街道下拉框
-      vm.RoadList = []; //街路巷下拉框
+      vm.roadList = []; //街路巷下拉框
       vm.dictList = [];
       vm.userInfo.state != 0 &&
         (vm.ruleForm = $.parseJSON(fjPublic.getLocalData("ybssItem")));
@@ -1309,8 +1320,8 @@ export default {
       (index == 2 || index == 5) && vm.getTeamList();
       index == 1 && vm.getDictList("YHZGL");
       index == 2 && vm.getDictList("DWLB");
-      index == 4 && vm.getDictList("ZDY_STFL");
-      index == 4 && (vm.ruleForm.county = "湘潭市");
+      index == 4 &&
+        (vm.getDictList("ZDY_STFL"), (vm.ruleForm.county = "湘潭市"));
       index == 0 && vm.getDownDepts();
       vm.getPoliceList(vm.ruleForm.suboffice);
       vm.$refs["ruleForm"].resetFields();
