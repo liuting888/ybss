@@ -668,18 +668,7 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="12">
-                    <el-form-item class="noBB" prop="birth" label="出生日期">
-                      <el-date-picker
-                        :disabled="userInfo.state == 1"
-                        v-model="ruleForm.birth"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        :placeholder="userInfo.state == 1?'':'请选择出生日期（必填）'"
-                      ></el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
+                  <el-col :span="24">
                     <el-form-item class="noBR noBB" prop="jobAndLive" label="是否从业且居住">
                       <el-select
                         :disabled="userInfo.state == 1"
@@ -1262,7 +1251,7 @@ export default {
         },
         dataType: "json",
         success: function(data) {
-          vm.roadList = data.list;
+          vm.roadList = data;
         },
         error: function(err) {}
       });
