@@ -171,6 +171,9 @@ export default {
         jobAndLive: [
             { required: true, message: "请输入是否从业且居住", trigger: "change" }
         ],
+        sex: [
+            { required: true, message: "请输入性别", trigger: "change" }
+        ],
         phone: [{ required: true, message: "请输入联系电话", trigger: "blur" },
         { validator: validateTel /* ,trigger:'change' */ }
         ],
@@ -308,6 +311,12 @@ export default {
             sq: "",
             phone: "",
             subAudit: "联系电话",
+        },
+        {
+            fj: "",
+            sq: "",
+            sex: "",
+            subAudit: "性别",
         },
         {
             fj: "",
@@ -473,6 +482,12 @@ export default {
             sq: "",
             presentAddress: "",
             subAudit: "现住地址",
+        },
+        {
+            fj: "",
+            sq: "",
+            sex: "",
+            subAudit: "性别",
         },
         {
             fj: "",

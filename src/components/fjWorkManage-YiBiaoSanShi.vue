@@ -249,7 +249,7 @@ export default {
       userInfo: "",
       activeIndex: "0",
       activeList: ybssData.activeList,
-      parentId: "",
+      parentId: "", //审核弹窗上级下拉框
       checked: false,
       //审核弹框表格信息
       gridData: ybssData.list,
@@ -258,7 +258,7 @@ export default {
       missionStates: [],
       contrastStates: [], //审核社区采集弹窗下拉框
       parentDataList: [], //审核社区采集的上级单位弹窗下拉框
-      contrastIndex: 0, //审核弹窗下拉框索引
+      contrastIndex: 0, //审核弹窗本级下拉框索引
       searchTime: "", // 查询时间
       // 列表查询参数
       searchForm: {
@@ -436,24 +436,31 @@ export default {
           vm.parentDataList = [];
           vm.parentId = "";
           //社区采集下拉框数据
-          for (let i = 0; i < vm.checkForm.oldData.length; i++) {
-            !vm.checkForm.oldData[i].address &&
-              (vm.checkForm.oldData[i].address = "地址不详");
-            let list = {
-              id: i,
-              name: vm.checkForm.oldData[i].address
-            };
-            vm.contrastStates.push(list);
+          if (vm.checkForm.oldData.length > 0) {
+            for (let i = 0; i < vm.checkForm.oldData.length; i++) {
+              !vm.checkForm.oldData[i].address &&
+                (vm.checkForm.oldData[i].address = "地址不详");
+              let list = {
+                id: i,
+                name: vm.checkForm.oldData[i].address
+              };
+              vm.contrastStates.push(list);
+            }
           }
           //对应上级下拉框数据
-          for (let i = 0; i < vm.checkForm.parentData.length; i++) {
-            !vm.checkForm.parentData[i].address &&
-              (vm.checkForm.parentData[i].address = "地址不详");
-            let list = {
-              id: vm.checkForm.parentData[i].id,
-              name: vm.checkForm.parentData[i].address
-            };
-            vm.parentDataList.push(list);
+          if (vm.checkForm.parentData.length > 0) {
+            for (let i = 0; i < vm.checkForm.parentData.length; i++) {
+              if (i == 0) {
+                vm.parentId = vm.checkForm.parentData[i].id; //默认选择第一项
+              }
+              !vm.checkForm.parentData[i].address &&
+                (vm.checkForm.parentData[i].address = "地址不详");
+              let list = {
+                id: vm.checkForm.parentData[i].id,
+                name: vm.checkForm.parentData[i].address
+              };
+              vm.parentDataList.push(list);
+            }
           }
           vm.checkDialogVisible = true;
           fjPublic.closeLoad();
@@ -524,7 +531,7 @@ export default {
             message: "请关联实有房屋"
           });
         }
-         vm.postSubmit(state);
+        vm.postSubmit(state);
       }
     },
     // 请求审核接口

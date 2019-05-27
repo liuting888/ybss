@@ -330,12 +330,15 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="居住状态说明">
-                      <el-input
-                        v-model="ruleForm.liveState"
+                    <el-form-item label="性别">
+                      <el-select
+                        v-model="ruleForm.sex"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入居住状态说明'"
-                      ></el-input>
+                        :placeholder="userInfo.state == 1?'':'请选择性别'"
+                      >
+                        <el-option label="男" value="1"></el-option>
+                        <el-option label="女" value="2"></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
@@ -352,7 +355,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item class="noBB" label="电话备注">
+                    <el-form-item label="电话备注">
                       <el-input
                         v-model="ruleForm.phoneRemark"
                         :disabled="userInfo.state == 1"
@@ -361,7 +364,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR noBB" label="人员关系">
+                    <el-form-item class="noBR" label="人员关系">
                       <!-- <el-input
                         v-model="ruleForm.peopleRelation"
                         :disabled="userInfo.state == 1"
@@ -379,6 +382,17 @@
                           :value="item.id"
                         ></el-option>
                       </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="居住状态说明" class="noBB noBR">
+                      <el-input
+                        v-model="ruleForm.liveState"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请输入居住状态说明'"
+                      ></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -668,7 +682,19 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="24">
+                  <el-col :span="12">
+                    <el-form-item label="性别" prop="sex" class="noBB">
+                      <el-select
+                        v-model="ruleForm.sex"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请选择性别'"
+                      >
+                        <el-option label="男" value="1"></el-option>
+                        <el-option label="女" value="2"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
                     <el-form-item class="noBR noBB" prop="jobAndLive" label="是否从业且居住">
                       <el-select
                         :disabled="userInfo.state == 1"
