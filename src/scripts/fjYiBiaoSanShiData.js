@@ -182,6 +182,15 @@ export default {
         ],
         studyTime: [
             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+        ],
+        industryType: [
+            { required: true, message: "请输入行业类别", trigger: "change" }
+        ],
+        isPublic: [
+            { required: true, message: "请输入是否公有制", trigger: "change" }
+        ],
+        entityType: [
+            { required: true, message: "请输入实体分类", trigger: "change" }
         ]
     },
     list: [
@@ -327,6 +336,24 @@ export default {
         {
             fj: "",
             sq: "",
+            nation: "",
+            subAudit: "民族",
+        },
+        {
+            fj: "",
+            sq: "",
+            marital: "",
+            subAudit: "婚姻状况",
+        },
+        {
+            fj: "",
+            sq: "",
+            education: "",
+            subAudit: "文化程度",
+        },
+        {
+            fj: "",
+            sq: "",
             liveState: "",
             subAudit: "居住状态说明",
         },
@@ -347,8 +374,7 @@ export default {
             sq: "",
             peopleRelation: "",
             subAudit: "人员关系",
-        }
-            ,
+        },
         {
             fj: "",
             sq: "",
@@ -402,8 +428,26 @@ export default {
         {
             fj: "",
             sq: "",
-            companyType: "",
+            name: "",
+            subAudit: "单位名称",
+        },
+        {
+            fj: "",
+            sq: "",
+            sPublic: "",
+            subAudit: "是否公有制",
+        },
+        {
+            fj: "",
+            sq: "",
+            industryType: "",
             subAudit: "单位类别",
+        },
+        {
+            fj: "",
+            sq: "",
+            companyType: "",
+            subAudit: "行业类别",
         }, {
             fj: "",
             sq: "",
@@ -425,9 +469,16 @@ export default {
         {
             fj: "",
             sq: "",
-            //缺少
-            subAudit: "组织机构代码/营业执照号",
-        }, {
+            license: "",
+            subAudit: "营业执照号",
+        },
+        {
+            fj: "",
+            sq: "",
+            organizationCode: "",
+            subAudit: "组织机构代码",
+        },
+        {
             fj: "",
             sq: "",
             legalIdCard: "",
@@ -482,6 +533,18 @@ export default {
             sq: "",
             presentAddress: "",
             subAudit: "现住地址",
+        },
+        {
+            fj: "",
+            sq: "",
+            nation: "",
+            subAudit: "民族",
+        },
+        {
+            fj: "",
+            sq: "",
+            companyName: "",
+            subAudit: "单位名称",
         },
         {
             fj: "",

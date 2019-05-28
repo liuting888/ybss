@@ -330,6 +330,40 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
+                    <el-form-item label="民族">
+                      <el-select
+                        :disabled="userInfo.state == 1"
+                        v-model="ruleForm.nation"
+                        :placeholder="userInfo.state == 1?'':'请选择民族'"
+                      >
+                        <el-option
+                          v-for="item in dictList"
+                          :key="item.id"
+                          :label="item.value"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item class="noBR" label="婚姻状况">
+                      <el-select
+                        :disabled="userInfo.state == 1"
+                        v-model="ruleForm.marital"
+                        :placeholder="userInfo.state == 1?'':'请选择婚姻状况'"
+                      >
+                        <el-option
+                          v-for="item in dictList"
+                          :key="item.id"
+                          :label="item.value"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
                     <el-form-item label="性别">
                       <el-select
                         v-model="ruleForm.sex"
@@ -355,14 +389,22 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="电话备注">
-                      <el-input
-                        v-model="ruleForm.phoneRemark"
+                    <el-form-item label="文化程度">
+                      <el-select
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入电话备注'"
-                      ></el-input>
+                        v-model="ruleForm.education"
+                        :placeholder="userInfo.state == 1?'':'请选择文化程度'"
+                      >
+                        <el-option
+                          v-for="item in dictList"
+                          :key="item.id"
+                          :label="item.value"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
+
                   <el-col :span="12">
                     <el-form-item class="noBR" label="人员关系">
                       <!-- <el-input
@@ -386,12 +428,32 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="24">
-                    <el-form-item label="居住状态说明" class="noBB noBR">
+                  <el-col :span="12">
+                    <el-form-item label="电话备注">
+                      <el-input
+                        v-model="ruleForm.phoneRemark"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请输入电话备注'"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="居住状态说明" class="noBR">
                       <el-input
                         v-model="ruleForm.liveState"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请输入居住状态说明'"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="24">
+                    <el-form-item label="楼栋详情" class="noBB noBR">
+                      <el-input
+                        v-model="ruleForm.address"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请输入楼栋详情'"
                       ></el-input>
                     </el-form-item>
                   </el-col>
@@ -515,6 +577,29 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
+                    <el-form-item prop="name" label="单位名称">
+                      <el-input
+                        v-model="ruleForm.name"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'单位名称（必填）'"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item class="noBR" prop="isPublic" label="是否公有制">
+                      <el-select
+                        :disabled="userInfo.state == 1"
+                        v-model="ruleForm.isPublic"
+                        :placeholder="userInfo.state == 1?'':'请选择是否公有制'"
+                      >
+                        <el-option label="公有" value="1"></el-option>
+                        <el-option label="私有" value="0"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
                     <el-form-item label="单位类别">
                       <el-select
                         :disabled="userInfo.state == 1"
@@ -542,12 +627,19 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="单位电话">
-                      <el-input
-                        v-model="ruleForm.companyPhone"
+                    <el-form-item prop="industryType" label="行业类别">
+                      <el-select
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入单位电话（必填）'"
-                      ></el-input>
+                        v-model="ruleForm.industryType"
+                        :placeholder="userInfo.state == 1?'':'请选择行业类别'"
+                      >
+                        <el-option
+                          v-for="item in dictList"
+                          :key="item.id"
+                          :label="item.value"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
@@ -562,11 +654,11 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item prop="license" label="组织机构代码/营业执照号">
+                    <el-form-item label="单位电话">
                       <el-input
-                        v-model="ruleForm.license"
+                        v-model="ruleForm.companyPhone"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入组织机构代码/营业执照号（必填）'"
+                        :placeholder="userInfo.state == 1?'':'请输入单位电话（必填）'"
                       ></el-input>
                     </el-form-item>
                   </el-col>
@@ -576,6 +668,26 @@
                         v-model="ruleForm.legalIdCard"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请输入法人/负责人证件号码（必填）'"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item prop="license" label="营业执照号">
+                      <el-input
+                        v-model="ruleForm.license"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请输入营业执照号（必填）'"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item prop="organizationCode" label="组织机构代码">
+                      <el-input
+                        v-model="ruleForm.organizationCode"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请输入组织机构代码'"
                       ></el-input>
                     </el-form-item>
                   </el-col>
@@ -683,6 +795,36 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
+                    <el-form-item label="民族">
+                      <el-select
+                        v-model="ruleForm.nation"
+                        :disabled="userInfo.state == 1"
+                        :placeholder="userInfo.state == 1?'':'请选择民族'"
+                      >
+                        <el-option label="男" value="1"></el-option>
+                        <el-option label="女" value="2"></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item class="noBR" label="单位名称">
+                      <el-select
+                        :disabled="userInfo.state == 1"
+                        v-model="ruleForm.companyName"
+                        :placeholder="userInfo.state == 1?'':'请选择单位名称'"
+                      >
+                        <el-option
+                          v-for="item in whether"
+                          :key="item.value"
+                          :label="item.lable"
+                          :value="item.value"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
                     <el-form-item label="性别" prop="sex" class="noBB">
                       <el-select
                         v-model="ruleForm.sex"
@@ -728,7 +870,7 @@
               <el-form :model="ruleForm" ref="ruleForm" :rules="rules">
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="实体名称">
+                    <el-form-item prop="entityName" label="实体名称">
                       <el-input
                         v-model="ruleForm.entityName"
                         :disabled="userInfo.state == 1"
@@ -737,7 +879,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="实体分类">
+                    <el-form-item class="noBR" prop="entityType" label="实体分类">
                       <el-select
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.entityType"
@@ -760,7 +902,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="县/区">
+                    <el-form-item prop="city" label="县/区">
                       <el-select
                         @change="changeCity"
                         :disabled="userInfo.state == 1"

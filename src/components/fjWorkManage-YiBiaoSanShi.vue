@@ -100,7 +100,7 @@
               <span
                 class="ope-txt"
                 v-if="parseInt( scope.row.state) == 0&&userInfo.userRole>1000"
-                @click="goReview(scope.row)"
+                @click="goReview(scope.row.id)"
               >审核</span>
               <span
                 class="ope-txt"
@@ -210,6 +210,7 @@
             <el-input
               v-if="activeIndex==1&&scope.row.subAudit=='楼栋祥址'"
               v-model="checkForm.newData.address"
+              @change="updPeopleInfo"
               clearable
               placeholder="请输入楼栋祥址"
               size="small"
@@ -416,15 +417,19 @@ export default {
       });
     },
     //打开审核弹窗
-    goReview(item) {
+    goReview(id) {
       let vm = this;
       fjPublic.openLoad("数据加载中...");
+      vm.contrastStates = [];
+      vm.parentDataList = [];
+      vm.parentId = "";
+      vm.processContrast("reset"); //清空列表数据
       $.ajax({
         url: fjPublic.ajaxUrlDNN + "/contrast",
         type: "POST",
         data: {
           tableName: vm.activeList[vm.activeIndex].tableName,
-          id: item.id
+          id: id
         },
         dataType: "json",
         success: function(data) {
@@ -432,9 +437,6 @@ export default {
           // console.log(arr.length == 0); //true
           vm.checkForm = data;
           vm.processContrast(0); //默认列表展示第一条数据
-          vm.contrastStates = [];
-          vm.parentDataList = [];
-          vm.parentId = "";
           //社区采集下拉框数据
           if (vm.checkForm.oldData.length > 0) {
             for (let i = 0; i < vm.checkForm.oldData.length; i++) {
@@ -477,18 +479,24 @@ export default {
       let vm = this;
       let list = vm.gridData[vm.activeIndex];
       for (var i in list) {
-        for (var j in list[i]) {
-          if (j != "fj" && j != "sq" && j != "subAudit") {
-            for (var k in vm.checkForm.newData) {
-              //辅警采集
-              if (k == j) {
-                list[i]["fj"] = vm.checkForm.newData[k];
+        if (index == "reset") {
+          //重置列表数据
+          list[i]["fj"] = "";
+          list[i]["sq"] = "";
+        } else {
+          for (var j in list[i]) {
+            if (j != "fj" && j != "sq" && j != "subAudit") {
+              for (var k in vm.checkForm.newData) {
+                //辅警采集
+                if (k == j) {
+                  list[i]["fj"] = vm.checkForm.newData[k];
+                }
               }
-            }
-            for (var k in vm.checkForm.oldData[index]) {
-              //社区采集
-              if (k == j) {
-                list[i]["sq"] = vm.checkForm.oldData[index][k];
+              for (var k in vm.checkForm.oldData[index]) {
+                //社区采集
+                if (k == j) {
+                  list[i]["sq"] = vm.checkForm.oldData[index][k];
+                }
               }
             }
           }
@@ -537,9 +545,9 @@ export default {
     // 请求审核接口
     postSubmit: function(state) {
       var vm = this;
-      if (vm.activeIndex == 1 && vm.checkForm.newData.address) {
-        vm.updPeopleInfo();
-      }
+      // if (vm.activeIndex == 1 && vm.checkForm.newData.address) {
+      //   vm.updPeopleInfo();
+      // }
       // 参数
       return new Promise((resolve, reject) => {
         $.ajax({
@@ -580,19 +588,29 @@ export default {
     // 修改居住人员楼栋祥址
     updPeopleInfo: function() {
       var vm = this;
-      // 参数
-      $.ajax({
-        url: fjPublic.ajaxUrlDNN + "/updInfo",
-        type: "POST",
-        data: {
-          tableName: " T_Info_Live_People",
-          id: vm.checkForm.newData.id,
-          address: vm.checkForm.newData.address
-        },
-        dataType: "json",
-        success: function(data) {},
-        error: function(err) {}
-      });
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: fjPublic.ajaxUrlDNN + "/updInfo",
+          type: "POST",
+          data: {
+            tableName: " T_Info_Live_People",
+            id: vm.checkForm.newData.id,
+            address: vm.checkForm.newData.address
+          },
+          dataType: "json",
+          success: function(data) {
+            vm.goReview(vm.checkForm.newData.id);
+            vm.$message({ type: "success", message: data.errorMsg });
+            resolve(data);
+          },
+          error: function(err) {
+            vm.$message({ type: "warning", message: "修改地址失败！！！" });
+            reject(err);
+          }
+        });
+      })
+        .then(res => {})
+        .catch(function(reason) {});
     },
     // 获取部门单位数据
     getTeamList: function(state) {
