@@ -240,6 +240,12 @@ export default {
         {
             fj: "",
             sq: "",
+            houseType: "",
+            subAudit: "房屋类型",
+        },
+        {
+            fj: "",
+            sq: "",
             entityName: "",
             subAudit: "实体名称",
         }, {
@@ -434,19 +440,19 @@ export default {
         {
             fj: "",
             sq: "",
-            sPublic: "",
+            isPublic: "",
             subAudit: "是否公有制",
         },
         {
             fj: "",
             sq: "",
-            industryType: "",
+            companyType: "",
             subAudit: "单位类别",
         },
         {
             fj: "",
             sq: "",
-            companyType: "",
+            industryType: "",
             subAudit: "行业类别",
         }, {
             fj: "",

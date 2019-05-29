@@ -133,8 +133,8 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="24">
-                    <el-form-item class="noBR" prop="address" label="楼栋详址">
+                  <el-col :span="12">
+                    <el-form-item prop="address" label="楼栋详址">
                       <el-input
                         v-model="ruleForm.address"
                         :disabled="userInfo.state == 1"
@@ -142,7 +142,24 @@
                       ></el-input>
                     </el-form-item>
                   </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="房屋类别" class="noBR">
+                      <el-select
+                        :disabled="userInfo.state == 1"
+                        v-model="ruleForm.houseType"
+                        :placeholder="userInfo.state == 1?'':'请选择房屋类别'"
+                      >
+                        <el-option
+                          v-for="item in dictList.ZDY_FWLB"
+                          :key="item.id"
+                          :label="item.value"
+                          :value="item.id"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
+
                 <el-row>
                   <el-col :span="12">
                     <el-form-item prop="entityName" label="实体名称">
@@ -337,7 +354,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择民族'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.GB_MZ"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -353,7 +370,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择婚姻状况'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.AF_HYZK"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -396,7 +413,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择文化程度'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.AF_WHCD"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -418,7 +435,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择人员关系'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.YHZGL"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -607,7 +624,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择单位类别'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.DWLB"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -634,7 +651,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择行业类别'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.ZDY_HYLB"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -795,29 +812,26 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="民族">
-                      <el-select
-                        v-model="ruleForm.nation"
+                    <el-form-item label="单位名称">
+                      <el-input
+                        v-model="ruleForm.companyName"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请选择民族'"
-                      >
-                        <el-option label="男" value="1"></el-option>
-                        <el-option label="女" value="2"></el-option>
-                      </el-select>
+                        :placeholder="userInfo.state == 1?'':'单位名称（必填）'"
+                      ></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="单位名称">
+                    <el-form-item label="民族" class="noBR">
                       <el-select
                         :disabled="userInfo.state == 1"
-                        v-model="ruleForm.companyName"
-                        :placeholder="userInfo.state == 1?'':'请选择单位名称'"
+                        v-model="ruleForm.nation"
+                        :placeholder="userInfo.state == 1?'':'请选择民族'"
                       >
                         <el-option
-                          v-for="item in whether"
-                          :key="item.value"
-                          :label="item.lable"
-                          :value="item.value"
+                          v-for="item in dictList.GB_MZ"
+                          :key="item.id"
+                          :label="item.value"
+                          :value="item.id"
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -886,7 +900,7 @@
                         :placeholder="userInfo.state == 1?'':'请选择实体分类'"
                       >
                         <el-option
-                          v-for="item in dictList"
+                          v-for="item in dictList.ZDY_STFL"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -1229,7 +1243,7 @@ export default {
       cityPlace: [], //城市下拉框
       streetPlace: [], //乡镇下拉框
       plotsPlace: [], //街道下拉框
-      dictList: [], //实体分类，单位类别，人员关系下拉框
+      dictList: {}, //实体分类，单位类别，人员关系等字典下拉框
       peopleRelationList: [], //人员关系下拉框
       roadList: [], //街路巷下拉框
       optionProps: {
@@ -1335,7 +1349,7 @@ export default {
         },
         dataType: "json",
         success: function(data) {
-          vm.dictList = data;
+          vm.dictList[type] = data;
         },
         error: function(err) {}
       });
@@ -1441,14 +1455,13 @@ export default {
         type: "POST",
         data: vm.ruleForm,
         dataType: "json",
-        success: function(data) {},
+        success: function(data) {
+          vm.$router.push({
+            path: "/fjWorkManage-YiBiaoSanShi"
+          });
+        },
         error: function(err) {
-          if (err.responseText == "success") {
-            vm.$router.push({
-              path: "/fjWorkManage-YiBiaoSanShi"
-            });
-          } else {
-          }
+          vm.$message({ type: "warning", message: "修改失败！" });
         }
       });
     },
@@ -1463,7 +1476,7 @@ export default {
       vm.streetPlace = []; //乡镇下拉框
       vm.plotsPlace = []; //街道下拉框
       vm.roadList = []; //街路巷下拉框
-      vm.dictList = [];
+      vm.dictList = {}; //字典下拉框
       vm.userInfo.state != 0 &&
         (vm.ruleForm = $.parseJSON(fjPublic.getLocalData("ybssItem")));
       vm.ruleForm.randomplace &&
@@ -1474,12 +1487,33 @@ export default {
         vm.changeCity();
         vm.changeStreet();
       }
-      (index == 2 || index == 5) && vm.getTeamList();
-      index == 1 && vm.getDictList("YHZGL");
-      index == 2 && vm.getDictList("DWLB");
-      index == 4 &&
-        (vm.getDictList("ZDY_STFL"), (vm.ruleForm.county = "湘潭市"));
-      index == 0 && vm.getDownDepts();
+      switch (parseInt(index)) {
+        case 0:
+          vm.getDownDepts();
+          vm.getDictList("ZDY_FWLB");
+          break;
+        case 1:
+          vm.getDictList("YHZGL");
+          vm.getDictList("GB_MZ");
+          vm.getDictList("AF_HYZK");
+          vm.getDictList("AF_WHCD");
+          break;
+        case 2:
+          vm.getDictList("DWLB");
+          vm.getDictList("ZDY_HYLB");
+          vm.getTeamList();
+          break;
+        case 3:
+          vm.getDictList("GB_MZ");
+          break;
+        case 4:
+          vm.getDictList("ZDY_STFL");
+          vm.ruleForm.county = "湘潭市";
+          break;
+        case 5:
+          vm.getTeamList();
+          break;
+      }
       vm.getPoliceList(vm.ruleForm.suboffice);
       vm.$refs["ruleForm"].resetFields();
     },

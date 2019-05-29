@@ -146,10 +146,12 @@
           <i class="el-icon-info"></i>
         </el-button>
       </el-tooltip>
-      <el-row v-if="activeIndex!=3">
+      <el-row>
         <el-form inline label-width="85px" label-position="left">
-          <el-col :lg="12" :xl="12" v-if="activeIndex<3">
-            <el-form-item :label="(activeIndex==0?activeList[4].name:activeList[0].name) +'：'">
+          <el-col :lg="12" :xl="12" v-if="activeIndex<4">
+            <el-form-item
+              :label="(activeIndex==0?activeList[4].name:activeIndex==3?'关联公司':activeList[0].name) +'：'"
+            >
               <el-select clearable filterable v-model="parentId" size="small">
                 <el-option
                   v-for="item in parentDataList"
@@ -161,11 +163,11 @@
               <p
                 v-if="parentDataList.length>0"
                 class="similar"
-              >社区警务平台已匹配到{{parentDataList.length}}条可参考的{{activeIndex==0?activeList[4].name:activeList[0].name}}数据</p>
+              >社区警务平台已匹配到{{parentDataList.length}}条可参考的{{activeIndex==0?activeList[4].name:activeIndex==3?'关联公司':activeList[0].name}}数据</p>
               <p
                 v-else
                 class="similar"
-              >社区警务平台无法匹配到可参考的{{activeIndex==0?activeList[4].name:activeList[0].name}}数据</p>
+              >社区警务平台无法匹配到可参考的{{activeIndex==0?activeList[4].name:activeIndex==3?'关联公司':activeList[0].name}}数据</p>
             </el-form-item>
           </el-col>
           <el-col :lg="12" :xl="12" v-if="activeIndex==0||activeIndex==2||activeIndex==4">
@@ -259,7 +261,7 @@ export default {
       missionStates: [],
       contrastStates: [], //审核社区采集弹窗下拉框
       parentDataList: [], //审核社区采集的上级单位弹窗下拉框
-      contrastIndex: 0, //审核弹窗本级下拉框索引
+      contrastIndex: "", //审核弹窗本级下拉框索引
       searchTime: "", // 查询时间
       // 列表查询参数
       searchForm: {
@@ -433,34 +435,41 @@ export default {
         },
         dataType: "json",
         success: function(data) {
-          // let arr = Object.keys(data.oldData[0]);
-          // console.log(arr.length == 0); //true
           vm.checkForm = data;
           vm.processContrast(0); //默认列表展示第一条数据
           //社区采集下拉框数据
           if (vm.checkForm.oldData.length > 0) {
             for (let i = 0; i < vm.checkForm.oldData.length; i++) {
-              !vm.checkForm.oldData[i].address &&
-                (vm.checkForm.oldData[i].address = "地址不详");
+              // !vm.checkForm.oldData[i].address &&
+              //   (vm.checkForm.oldData[i].address = "地址不详");
               let list = {
                 id: i,
-                name: vm.checkForm.oldData[i].address
+                name:
+                  vm.activeIndex == 2
+                    ? vm.checkForm.oldData[i].name
+                    : vm.checkForm.oldData[i].address
               };
+              if (i == 0) {
+                vm.contrastIndex = i; //默认选择第一项
+              }
               vm.contrastStates.push(list);
             }
           }
-          //对应上级下拉框数据
+          //对应上级下拉框数据.
           if (vm.checkForm.parentData.length > 0) {
             for (let i = 0; i < vm.checkForm.parentData.length; i++) {
+              // !vm.checkForm.parentData[i].address &&
+              //   (vm.checkForm.parentData[i].address = "地址不详");
+              let list = {
+                id: vm.checkForm.parentData[i].id,
+                name:
+                  vm.activeIndex == 3
+                    ? vm.checkForm.parentData[i].name
+                    : vm.checkForm.parentData[i].address
+              };
               if (i == 0) {
                 vm.parentId = vm.checkForm.parentData[i].id; //默认选择第一项
               }
-              !vm.checkForm.parentData[i].address &&
-                (vm.checkForm.parentData[i].address = "地址不详");
-              let list = {
-                id: vm.checkForm.parentData[i].id,
-                name: vm.checkForm.parentData[i].address
-              };
               vm.parentDataList.push(list);
             }
           }
