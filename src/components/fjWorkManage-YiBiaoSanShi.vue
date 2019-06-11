@@ -54,7 +54,7 @@
                   <el-input
                     v-model="searchForm.user"
                     clearable
-                    placeholder="请输入负责人或警号"
+                    placeholder="请输入提交人或警号"
                     size="small"
                     class="search-input"
                   >
@@ -65,11 +65,11 @@
             </el-form>
           </el-row>
         </div>
-        <div
+        <!-- <div
           class="add-list-btn"
           v-if="userInfo.userRole>1000"
           @click="goDetails(0)"
-        >+ 添加{{activeList[activeIndex].name}}</div>
+        >+ 添加{{activeList[activeIndex].name}}</div> -->
         <!-- table -->
         <el-table :data="tableDataList" style="width: 100%" class="el-tables">
           <el-table-column label="信息类型">
@@ -102,11 +102,11 @@
                 v-if="parseInt( scope.row.state) == 0&&userInfo.userRole>1000"
                 @click="goReview(scope.row.id)"
               >审核</span>
-              <span
+              <!-- <span
                 class="ope-txt"
                 v-if="parseInt( scope.row.state) == 0&&userInfo.userRole>1000"
                 @click="goDetails(2,scope.row)"
-              >编辑</span>
+              >编辑</span> -->
             </template>
           </el-table-column>
         </el-table>
@@ -266,7 +266,7 @@ export default {
       // 列表查询参数
       searchForm: {
         tableName: "", //表格类型
-        user: "", // 警号或负责人名称
+        user: "", // 警号或提交人名称
         deptId: "", // 派出所
         status: "" // 状态
       },
@@ -368,7 +368,7 @@ export default {
     changeContrast: function() {
       this.processContrast(this.contrastIndex);
     },
-    // 标题或负责人名称查询
+    // 标题或提交人名称查询
     searchAttendLeave: function() {
       this.searchSign();
     },
@@ -394,12 +394,13 @@ export default {
       var vm = this;
       fjPublic.openLoad("数据加载中...");
       // 参数
+      this.searchForm["userId"] = this.userInfo.userId;
       this.searchForm["pageNumber"] = this.currentPage;
       this.searchForm["pageSize"] = this.pageSize;
       this.searchForm["tableName"] = this.activeList[
         this.activeIndex
       ].tableName;
-      //标题或负责人名称
+      //标题或提交人名称
       this.searchForm["user"] = this.searchForm.user;
       $.ajax({
         url: fjPublic.ajaxUrlDNN + "/getInfoList",

@@ -45,6 +45,8 @@
                   <el-col :span="12">
                     <el-form-item prop="city" label="市、县/区">
                       <el-select
+                        clearable
+                        filterable
                         @change="changeCity"
                         v-model="ruleForm.city"
                         :disabled="userInfo.state == 1"
@@ -62,6 +64,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="street" label="街道/乡镇">
                       <el-select
+                        clearable
+                        filterable
                         @change="changeStreet"
                         v-model="ruleForm.street"
                         :disabled="userInfo.state == 1"
@@ -81,6 +85,8 @@
                   <el-col :span="12">
                     <el-form-item prop="plots" label="社区/村">
                       <el-select
+                        clearable
+                        filterable
                         @change="changePlots"
                         v-model="ruleForm.plots"
                         :disabled="userInfo.state == 1"
@@ -98,6 +104,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="road" label="街路巷">
                       <el-select
+                        clearable
+                        filterable
                         v-model="ruleForm.road"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请选择街路巷（必选）'"
@@ -145,6 +153,8 @@
                   <el-col :span="12">
                     <el-form-item label="房屋类别" class="noBR">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.houseType"
                         :placeholder="userInfo.state == 1?'':'请选择房屋类别'"
@@ -173,6 +183,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" label="产权类型">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.type"
                         :placeholder="userInfo.state == 1?'':'请选择'"
@@ -227,6 +239,8 @@
                   <el-col :span="12">
                     <el-form-item label="是否出租房屋">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.rent"
                         :placeholder="userInfo.state == 1?'':'请选择'"
@@ -256,6 +270,8 @@
                   <el-col :span="12">
                     <el-form-item label="房屋所属分局">
                       <el-select
+                        clearable
+                        filterable
                         v-model="ruleForm.suboffice"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请选择房屋所属分局'"
@@ -273,6 +289,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" label="房屋所属派出所">
                       <el-select
+                        clearable
+                        filterable
                         v-model="ruleForm.police"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请选择房屋所属派出所'"
@@ -349,6 +367,8 @@
                   <el-col :span="12">
                     <el-form-item label="民族">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.nation"
                         :placeholder="userInfo.state == 1?'':'请选择民族'"
@@ -430,6 +450,8 @@
                         :placeholder="userInfo.state == 1?'':'请输入人员关系'"
                       ></el-input>-->
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.peopleRelation"
                         :placeholder="userInfo.state == 1?'':'请选择人员关系'"
@@ -494,6 +516,8 @@
                   <el-col :span="12">
                     <el-form-item prop="city" label="市、县/区">
                       <el-select
+                        clearable
+                        filterable
                         @change="changeCity"
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.city"
@@ -511,6 +535,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="street" label="街道/乡镇">
                       <el-select
+                        clearable
+                        filterable
                         @change="changeStreet"
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.street"
@@ -530,6 +556,8 @@
                   <el-col :span="12">
                     <el-form-item prop="plots" label="社区/村">
                       <el-select
+                        clearable
+                        filterable
                         @change="changePlots"
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.plots"
@@ -547,6 +575,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="road" label="街路巷">
                       <el-select
+                        clearable
+                        filterable
                         v-model="ruleForm.road"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请选择街路巷（必选）'"
@@ -619,12 +649,14 @@
                   <el-col :span="12">
                     <el-form-item label="单位类别">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.companyType"
                         :placeholder="userInfo.state == 1?'':'请选择单位类别'"
                       >
                         <el-option
-                          v-for="item in dictList.DWLB"
+                          v-for="item in dictList.JG_DWLB"
                           :key="item.id"
                           :label="item.value"
                           :value="item.id"
@@ -646,6 +678,8 @@
                   <el-col :span="12">
                     <el-form-item prop="industryType" label="行业类别">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.industryType"
                         :placeholder="userInfo.state == 1?'':'请选择行业类别'"
@@ -713,6 +747,8 @@
                   <el-col :span="24">
                     <el-form-item class="noBR" label="单位登记所属分局、派出所">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.police"
                         :placeholder="userInfo.state == 1?'':'请选择'"
@@ -823,6 +859,8 @@
                   <el-col :span="12">
                     <el-form-item label="民族" class="noBR">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.nation"
                         :placeholder="userInfo.state == 1?'':'请选择民族'"
@@ -857,12 +895,8 @@
                         v-model="ruleForm.jobAndLive"
                         :placeholder="userInfo.state == 1?'':'请选择是否从业且居住（必填）'"
                       >
-                        <el-option
-                          v-for="item in whether"
-                          :key="item.value"
-                          :label="item.lable"
-                          :value="item.value"
-                        ></el-option>
+                        <el-option label="否" value="0"></el-option>
+                        <el-option label="是" value="1"></el-option>
                       </el-select>
                     </el-form-item>
                   </el-col>
@@ -895,6 +929,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" prop="entityType" label="实体分类">
                       <el-select
+                        clearable
+                        filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.entityType"
                         :placeholder="userInfo.state == 1?'':'请选择实体分类'"
@@ -918,6 +954,8 @@
                   <el-col :span="12">
                     <el-form-item prop="city" label="县/区">
                       <el-select
+                        clearable
+                        filterable
                         @change="changeCity"
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.city"
@@ -937,6 +975,8 @@
                   <el-col :span="12">
                     <el-form-item label="街道/乡镇">
                       <el-select
+                        clearable
+                        filterable
                         @change="changeStreet"
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.street"
@@ -954,6 +994,8 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" label="社区/村">
                       <el-select
+                        clearable
+                        filterable
                         @change="changePlots"
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.plots"
@@ -973,6 +1015,8 @@
                   <el-col :span="12">
                     <el-form-item label="街路巷">
                       <el-select
+                        clearable
+                        filterable
                         v-model="ruleForm.road"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请选择街路巷（必选）'"
@@ -1255,16 +1299,6 @@ export default {
       subofficeList: [], //房屋所属分局
       policeLists: [], //房屋所属派出所
       policeList: [], //所属派出所
-      whether: [
-        {
-          value: "0",
-          lable: "是"
-        },
-        {
-          value: "1",
-          lable: "否"
-        }
-      ], //是否
       rentWhether: [
         //是否出租房屋
         {
@@ -1335,7 +1369,7 @@ export default {
     // 获取单位类别
     /**
      * @description: 获取人员关系，实体类型，单位类别下拉框数据
-     * @param {type} type 人员关系：YHZGL，实体分类：ZDY_STFL ，单位类别：DWLB
+     * @param {type} type 人员关系：YHZGL，实体分类：ZDY_STFL ，单位类别：JG_DWLB
      * @return:
      */
     getDictList: function(type) {
@@ -1499,7 +1533,7 @@ export default {
           vm.getDictList("AF_WHCD");
           break;
         case 2:
-          vm.getDictList("DWLB");
+          vm.getDictList("JG_DWLB");
           vm.getDictList("ZDY_HYLB");
           vm.getTeamList();
           break;
