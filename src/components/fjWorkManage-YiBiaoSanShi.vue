@@ -36,7 +36,7 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :lg="8" :xl="7" class="time-item">
+              <el-col :lg="9" :xl="8" class="time-item">
                 <el-form-item label="起始时间：" class="datepicker">
                   <el-date-picker
                     v-model="searchTime"
@@ -49,7 +49,7 @@
                   ></el-date-picker>
                 </el-form-item>
               </el-col>
-              <el-col :xs="8" :sm="12" :md="16" :lg="6" :xl="6">
+              <el-col :lg="7" :xl="6" >
                 <el-form-item label="输入查询：">
                   <el-input
                     v-model="searchForm.user"
@@ -65,9 +65,10 @@
             </el-form>
           </el-row>
         </div>
+        <!-- 湘潭版辅警才可以添加 -->
         <!-- <div
           class="add-list-btn"
-          v-if="userInfo.userRole>1000"
+          v-if="userInfo.userRole==1000"
           @click="goDetails(0)"
         >+ 添加{{activeList[activeIndex].name}}</div> -->
         <!-- table -->
@@ -95,6 +96,9 @@
           </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
+              <!-- 湘潭版 -->
+              <!-- <span class="ope-txt" @click="goDetails(1,scope.row)">查看</span> -->
+              <!-- 单独版 -->
               <span class="ope-txt" v-if="!scope.row.state">--</span>
               <span class="ope-txt" v-if="scope.row.state != 0" @click="goDetails(1,scope.row)">查看</span>
               <span
@@ -106,7 +110,7 @@
                 class="ope-txt"
                 v-if="parseInt( scope.row.state) == 0&&userInfo.userRole>1000"
                 @click="goDetails(2,scope.row)"
-              >编辑</span> -->
+              >编辑</span>-->
             </template>
           </el-table-column>
         </el-table>
@@ -425,6 +429,7 @@ export default {
       fjPublic.openLoad("数据加载中...");
       vm.contrastStates = [];
       vm.parentDataList = [];
+      vm.contrastIndex = "";
       vm.parentId = "";
       vm.processContrast("reset"); //清空列表数据
       $.ajax({
@@ -441,8 +446,6 @@ export default {
           //社区采集下拉框数据
           if (vm.checkForm.oldData.length > 0) {
             for (let i = 0; i < vm.checkForm.oldData.length; i++) {
-              // !vm.checkForm.oldData[i].address &&
-              //   (vm.checkForm.oldData[i].address = "地址不详");
               let list = {
                 id: i,
                 name:
@@ -459,8 +462,6 @@ export default {
           //对应上级下拉框数据.
           if (vm.checkForm.parentData.length > 0) {
             for (let i = 0; i < vm.checkForm.parentData.length; i++) {
-              // !vm.checkForm.parentData[i].address &&
-              //   (vm.checkForm.parentData[i].address = "地址不详");
               let list = {
                 id: vm.checkForm.parentData[i].id,
                 name:

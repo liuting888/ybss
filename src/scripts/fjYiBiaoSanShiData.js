@@ -372,14 +372,14 @@ export default {
         {
             fj: "",
             sq: "",
-            phoneRemark: "",
-            subAudit: "电话备注",
+            peopleRelation: "",
+            subAudit: "人员关系",
         },
         {
             fj: "",
             sq: "",
-            peopleRelation: "",
-            subAudit: "人员关系",
+            phoneRemark: "",
+            subAudit: "电话备注",
         },
         {
             fj: "",
