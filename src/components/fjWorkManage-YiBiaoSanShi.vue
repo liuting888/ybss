@@ -6,20 +6,50 @@
     <div class="fj-block content">
       <div class="fj-block-head kaohe" style="border-bottom:0px;">
         <el-tabs v-model="activeIndex" @tab-click="handleClick">
-          <el-tab-pane label="实有房屋" name="0"></el-tab-pane>
-          <el-tab-pane label="居住人员" name="1"></el-tab-pane>
-          <el-tab-pane label="实有单位" name="2"></el-tab-pane>
-          <el-tab-pane label="从业人员" name="3"></el-tab-pane>
           <el-tab-pane label="实体信息" name="4"></el-tab-pane>
+          <el-tab-pane label="实有房屋" name="0"></el-tab-pane>
+          <el-tab-pane label="实有单位" name="2"></el-tab-pane>
+          <el-tab-pane label="居住人员" name="1"></el-tab-pane>
+          <el-tab-pane label="从业人员" name="3"></el-tab-pane>
           <!-- <el-tab-pane label="就学信息" name="5"></el-tab-pane> -->
         </el-tabs>
       </div>
       <div class="fj-block-body">
         <div class="fj-search-inline">
           <el-row>
-            <el-form inline label-width="85px" label-position="left">
-              <el-col :lg="6" :xl="5">
-                <el-form-item label="部门单位：">
+            <el-form label-width="85px" inline label-position="left">
+              <el-col :lg="6" :xl="6">
+                <el-form-item label="分局：">
+                  <el-select
+                    @change="changeDeptBelongId"
+                    clearable
+                    filterable
+                    v-model="searchForm.deptBelongId"
+                    size="small"
+                  >
+                    <el-option
+                      v-for="item in supDeptIds"
+                      :key="item.deptid"
+                      :label="item.deptname"
+                      :value="item.deptid"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="状态：">
+                  <el-select
+                    @change="changeStatus"
+                    clearable
+                    v-model="searchForm.state"
+                    size="small"
+                  >
+                    <el-option label="待审核" value="0"></el-option>
+                    <el-option label="已通过" value="1"></el-option>
+                    <el-option label="已废弃" value="2"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="6" :xl="6">
+                <el-form-item label="派出所：">
                   <el-select
                     @change="changeDeptId"
                     clearable
@@ -35,21 +65,6 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-              </el-col>
-              <el-col :lg="9" :xl="8" class="time-item">
-                <el-form-item label="起始时间：" class="datepicker">
-                  <el-date-picker
-                    v-model="searchTime"
-                    type="daterange"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期"
-                    @change="changeSearchTime"
-                    size="small"
-                  ></el-date-picker>
-                </el-form-item>
-              </el-col>
-              <el-col :lg="7" :xl="6" >
                 <el-form-item label="输入查询：">
                   <el-input
                     v-model="searchForm.user"
@@ -60,6 +75,31 @@
                   >
                     <el-button slot="append" @click="searchAttendLeave">搜索</el-button>
                   </el-input>
+                  <div class="search-btn">
+                    <form
+                      style="display:none;"
+                      name="exportForm"
+                      :action="ajaxUrlDNN + '/getOneStandardThreeRealStatistics?deptBelongId=' + searchForm.deptBelongId + '&endTime=' + searchForm.endTime + '&deptId=' + searchForm.deptId + '&startTime=' + searchForm.startTime  + '&userId=' + userInfo.userId"
+                      method="post"
+                      enctype="multipart/form-data"
+                    ></form>
+                    <el-button plain @click="exportExcl">
+                      <span>导出</span>
+                    </el-button>
+                  </div>
+                </el-form-item>
+              </el-col>
+              <el-col :lg="8" :xl="8" class="time-item">
+                <el-form-item label="起止日期：" class="datepicker">
+                  <el-date-picker
+                    v-model="searchForm.searchTime"
+                    type="daterange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    @change="changeSearchTime"
+                    size="small"
+                  ></el-date-picker>
                 </el-form-item>
               </el-col>
             </el-form>
@@ -70,7 +110,7 @@
           class="add-list-btn"
           v-if="userInfo.userRole==1000"
           @click="goDetails(0)"
-        >+ 添加{{activeList[activeIndex].name}}</div> -->
+        >+ 添加{{activeList[activeIndex].name}}</div>-->
         <!-- table -->
         <el-table :data="tableDataList" style="width: 100%" class="el-tables">
           <el-table-column label="信息类型">
@@ -106,6 +146,7 @@
                 v-if="parseInt( scope.row.state) == 0&&userInfo.userRole>1000"
                 @click="goReview(scope.row.id)"
               >审核</span>
+              <!-- 编辑功能都不需要 -->
               <!-- <span
                 class="ope-txt"
                 v-if="parseInt( scope.row.state) == 0&&userInfo.userRole>1000"
@@ -143,8 +184,8 @@
       <el-tooltip placement="right">
         <div slot="content">
           1.有相似的房屋信息，在社区警务平台选择相似房屋信息，勾选覆盖原有信息再点击通过
-          <br>2.若无相似信息或现有信息不匹配，在实体信息选择对应实体信息，点击通过
-          <br>3.重复信息可点击作废
+          <br />2.若无相似信息或现有信息不匹配，在实体信息选择对应实体信息，点击通过
+          <br />3.重复信息可点击作废
         </div>
         <el-button>
           <i class="el-icon-info"></i>
@@ -203,13 +244,13 @@
         <el-table-column property="subAudit" label="基本信息" width="200"></el-table-column>
         <el-table-column property="sq" width="400">
           <template slot="header" slot-scope="scope">
-            <img class="icon" src="static/images/ybss-sq.png" alt>
+            <img class="icon" src="static/images/ybss-sq.png" alt />
             <span>社区警务平台</span>
           </template>
         </el-table-column>
         <el-table-column property="fj" label="辅警采集" width="400">
           <template slot="header" slot-scope="scope">
-            <img class="icon" src="static/images/ybss-fj.png" alt>
+            <img class="icon" src="static/images/ybss-fj.png" alt />
             <span>辅警采集</span>
           </template>
           <template slot-scope="scope">
@@ -253,16 +294,19 @@ export default {
         { name: "工作管理", path: "" },
         { name: "一标三实", path: "" }
       ],
+      ajaxUrlDNN: fjPublic.ajaxUrlDNN,
       userInfo: "",
-      activeIndex: "0",
+      activeIndex: "4",
       activeList: ybssData.activeList,
       parentId: "", //审核弹窗上级下拉框
       checked: false,
       //审核弹框表格信息
       gridData: ybssData.list,
       checkDialogVisible: false,
-      // 部门下拉框
+      // 派出所下拉框
       missionStates: [],
+      //部门下拉框
+      supDeptIds: [],
       contrastStates: [], //审核社区采集弹窗下拉框
       parentDataList: [], //审核社区采集的上级单位弹窗下拉框
       contrastIndex: "", //审核弹窗本级下拉框索引
@@ -272,7 +316,7 @@ export default {
         tableName: "", //表格类型
         user: "", // 警号或提交人名称
         deptId: "", // 派出所
-        status: "" // 状态
+        state: "" // 状态
       },
       // 审核列表参数
       checkForm: {
@@ -296,6 +340,7 @@ export default {
     // fjPublic.closeLoad();
     // 初始化任务列表
     // this.searchSign();
+    // this.initSupDeptIds();
     this.getTeamList();
     return;
   },
@@ -356,24 +401,74 @@ export default {
     },
     //获取被选中的标签 tab 实例
     handleClick(tab) {
-      this.activeIndex = tab.index;
-      for (var i in this.searchForm) {
-        this.searchForm[i] = "";
-      }
+      // switch (tab.index) {
+      //   case 0:
+      //     console.log(1);
+      //     this.activeIndex = 4;
+      //     break;
+      //   case 1:
+      //     this.activeIndex = 0;
+      //     break;
+      //   case 2:
+      //     this.activeIndex = 2;
+      //     break;
+      //   case 3:
+      //     this.activeIndex = 1;
+      //     break;
+      //   case 4:
+      //     this.activeIndex = 3;
+      //     break;
+      // }
+      // this.activeIndex = tab.index;
+      // console.log(this.activeIndex);
+      // console.log(tab);
+      // for (var i in this.searchForm) {
+      //   this.searchForm[i] = "";
+      // }
       this.currentPage = 1;
       this.searchSign();
     },
-    // 修改单位下拉框查询
+    // 修改分局下拉框查询
+    changeDeptBelongId: function(deptBelongId) {
+      this.searchForm["deptBelongId"] = deptBelongId;
+      this.searchSign();
+      var defer = $.Deferred();
+      var vm = this;
+      $.ajax({
+        url: fjPublic.ajaxUrlDNN + "/searchDeptsByFenju",
+        type: "POST",
+        data: {
+          parentDeptId: vm.searchForm.deptBelongId
+        },
+        dataType: "json",
+        success: function(data) {
+          vm.missionStates = data.list;
+          defer.resolve();
+        },
+        error: function(err) {
+          defer.reject();
+        }
+      });
+      return defer;
+    },
+    // 修改派出所下拉框查询
     changeDeptId: function(deptId) {
       this.searchForm["deptId"] = deptId;
+      this.currentPage = 1;
       this.searchSign();
     },
     // 修改审核弹框实体下拉框查询
     changeContrast: function() {
       this.processContrast(this.contrastIndex);
     },
+    // 修改状态下拉框查询
+    changeStatus: function() {
+      this.currentPage = 1;
+      this.searchSign();
+    },
     // 标题或提交人名称查询
     searchAttendLeave: function() {
+      this.currentPage = 1;
       this.searchSign();
     },
     // 修改查询时间
@@ -391,6 +486,7 @@ export default {
         this.searchForm["startTime"] = "";
         this.searchForm["endTime"] = "";
       }
+      this.currentPage = 1;
       this.searchSign();
     },
     // 获取列表
@@ -538,19 +634,23 @@ export default {
             });
           });
       } else {
-        if (vm.activeIndex == 0 && vm.parentId == "") {
-          return vm.$message({
-            type: "info",
-            message: "请关联实体信息"
-          });
+        if (state == 2) {
+          vm.postSubmit(state);
+        } else {
+          if (vm.activeIndex == 0 && vm.parentId == "") {
+            return vm.$message({
+              type: "info",
+              message: "请关联实体信息"
+            });
+          }
+          if (vm.activeIndex == 2 && vm.parentId == "") {
+            return vm.$message({
+              type: "info",
+              message: "请关联实有房屋"
+            });
+          }
+          vm.postSubmit(state);
         }
-        if (vm.activeIndex == 2 && vm.parentId == "") {
-          return vm.$message({
-            type: "info",
-            message: "请关联实有房屋"
-          });
-        }
-        vm.postSubmit(state);
       }
     },
     // 请求审核接口
@@ -623,7 +723,52 @@ export default {
         .then(res => {})
         .catch(function(reason) {});
     },
-    // 获取部门单位数据
+    exportExcl: function() {
+      // 导出
+      let data = this.searchForm;
+      let list = {
+        deptBelongId: data.deptBelongId ? data.deptBelongId : "",
+        endTime: data.endTime ? data.endTime : "",
+        deptId: data.deptId ? data.deptId : "",
+        startTime: data.startTime ? data.startTime : "",
+        userId: this.userInfo.userId
+      };
+      window.open(
+        this.ajaxUrlDNN +
+          "/getOneStandardThreeRealStatistics?deptBelongId=" +
+          list.deptBelongId +
+          "&endTime=" +
+          list.endTime +
+          "&deptId=" +
+          list.deptId +
+          "&startTime=" +
+          list.startTime +
+          "&userId=" +
+          this.userInfo.userId
+      );
+    },
+    // 初始化分局
+    initSupDeptIds: function() {
+      var defer = $.Deferred();
+      var vm = this;
+      $.ajax({
+        url: fjPublic.ajaxUrlDNN + "/getParentDeptListByDeptId",
+        type: "POST",
+        data: {
+          deptId: vm.userInfo.deptId
+        },
+        dataType: "json",
+        success: function(data) {
+          vm.supDeptIds = data.data;
+          defer.resolve();
+        },
+        error: function(err) {
+          defer.reject();
+        }
+      });
+      return defer;
+    },
+    // 获取派出所数据
     getTeamList: function(state) {
       var vm = this;
       // 参数
@@ -661,6 +806,16 @@ export default {
       }
       let time = value;
       return time.slice(0, 4) + "-" + time.slice(4, 6) + "-" + time.slice(6, 8);
+    }
+  },
+  watch: {
+    "searchForm.user"(curVal, oldVal) {
+      // 实现input连续输入，只发一次请求
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.currentPage = 1;
+        this.searchSign();
+      }, 300);
     }
   },
   components: {
@@ -715,6 +870,12 @@ export default {
           }
         }
       }
+    }
+    .search-btn {
+      position: absolute;
+      top: 0;
+      right: -330px;
+      width: 300px;
     }
   }
   .el-tables {

@@ -102,7 +102,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" prop="road" label="街路巷">
+                    <el-form-item class="noBR" label="街路巷">
                       <el-select
                         clearable
                         filterable
@@ -122,7 +122,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item prop="houseNumber" label="门牌号">
+                    <el-form-item label="门牌号">
                       <el-input
                         v-model="ruleForm.houseNumber"
                         :disabled="userInfo.state == 1"
@@ -131,7 +131,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" prop="community" label="小区（组）">
+                    <el-form-item class="noBR" label="小区（组）">
                       <el-input
                         v-model="ruleForm.community"
                         :disabled="userInfo.state == 1"
@@ -142,7 +142,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item prop="address" label="楼栋详址">
+                    <el-form-item label="楼栋详址">
                       <el-input
                         v-model="ruleForm.address"
                         :disabled="userInfo.state == 1"
@@ -151,7 +151,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="房屋类别" class="noBR">
+                    <el-form-item label="房屋类别" prop="houseType" class="noBR">
                       <el-select
                         clearable
                         filterable
@@ -181,7 +181,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="产权类型">
+                    <el-form-item class="noBR" prop="type" label="产权类型">
                       <el-select
                         clearable
                         filterable
@@ -197,7 +197,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="房主姓名">
+                    <el-form-item label="房主姓名" prop="houseName">
                       <el-input
                         v-model="ruleForm.houseName"
                         :disabled="userInfo.state == 1"
@@ -217,7 +217,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="证件号码">
+                    <el-form-item label="证件号码" prop="idCard">
                       <el-input
                         v-model="ruleForm.idCard"
                         :disabled="userInfo.state == 1"
@@ -226,7 +226,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="联系电话">
+                    <el-form-item class="noBR" prop="phone" label="联系电话">
                       <el-input
                         v-model="ruleForm.phone"
                         :disabled="userInfo.state == 1"
@@ -237,7 +237,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="是否出租房屋">
+                    <el-form-item prop="rent" label="是否出租房屋">
                       <el-select
                         clearable
                         filterable
@@ -255,7 +255,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="房屋建成时间/出租时间">
+                    <el-form-item class="noBR" prop="time" label="房屋建成时间/出租时间">
                       <el-date-picker
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.time"
@@ -325,7 +325,7 @@
               <el-form :model="ruleForm" ref="ruleForm" :rules="rules">
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="姓名">
+                    <el-form-item label="姓名" prop="name">
                       <el-input
                         v-model="ruleForm.name"
                         :disabled="userInfo.state == 1"
@@ -334,7 +334,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="身份证号码">
+                    <el-form-item class="noBR" prop="idCard" label="身份证号码">
                       <el-input
                         v-model="ruleForm.idCard"
                         :disabled="userInfo.state == 1"
@@ -345,7 +345,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="联系电话">
+                    <el-form-item label="联系电话" prop="phone">
                       <el-input
                         v-model="ruleForm.phone"
                         :disabled="userInfo.state == 1"
@@ -365,7 +365,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="民族">
+                    <el-form-item label="民族" prop="nation">
                       <el-select
                         clearable
                         filterable
@@ -383,7 +383,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="婚姻状况">
+                    <el-form-item class="noBR" label="婚姻状况" prop="marital">
                       <el-select
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.marital"
@@ -401,7 +401,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="性别">
+                    <el-form-item label="性别" prop="sex">
                       <el-select
                         v-model="ruleForm.sex"
                         :disabled="userInfo.state == 1"
@@ -426,7 +426,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="文化程度">
+                    <el-form-item label="文化程度" prop="education">
                       <el-select
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.education"
@@ -488,7 +488,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="24">
-                    <el-form-item label="楼栋详情" class="noBB noBR">
+                    <el-form-item label="楼栋详情" class="noBB noBR" prop="address">
                       <el-input
                         v-model="ruleForm.address"
                         :disabled="userInfo.state == 1"
@@ -573,7 +573,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" prop="road" label="街路巷">
+                    <el-form-item class="noBR" label="街路巷">
                       <el-select
                         clearable
                         filterable
@@ -593,7 +593,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item prop="houseNumber" label="门牌号">
+                    <el-form-item label="门牌号">
                       <el-input
                         v-model="ruleForm.houseNumber"
                         :disabled="userInfo.state == 1"
@@ -602,7 +602,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" prop="community" label="小区（组）">
+                    <el-form-item class="noBR" label="小区（组）">
                       <el-input
                         v-model="ruleForm.community"
                         :disabled="userInfo.state == 1"
@@ -613,7 +613,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="24">
-                    <el-form-item class="noBR" prop="address" label="楼栋详址">
+                    <el-form-item class="noBR" label="楼栋详址">
                       <el-input
                         v-model="ruleForm.address"
                         :disabled="userInfo.state == 1"
@@ -647,7 +647,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="单位类别">
+                    <el-form-item label="单位类别" prop="companyType">
                       <el-select
                         clearable
                         filterable
@@ -705,7 +705,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="单位电话">
+                    <el-form-item label="单位电话" prop="companyPhone">
                       <el-input
                         v-model="ruleForm.companyPhone"
                         :disabled="userInfo.state == 1"
@@ -857,13 +857,13 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item label="民族" class="noBR">
+                    <el-form-item label="民族" class="noBR" prop="nation">
                       <el-select
                         clearable
                         filterable
                         :disabled="userInfo.state == 1"
                         v-model="ruleForm.nation"
-                        :placeholder="userInfo.state == 1?'':'请选择民族'"
+                        :placeholder="userInfo.state == 1?'':'请选择民族（必填）'"
                       >
                         <el-option
                           v-for="item in dictList.GB_MZ"
@@ -881,7 +881,7 @@
                       <el-select
                         v-model="ruleForm.sex"
                         :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请选择性别'"
+                        :placeholder="userInfo.state == 1?'':'请选择性别（必填）'"
                       >
                         <el-option label="男" value="1"></el-option>
                         <el-option label="女" value="2"></el-option>
@@ -973,7 +973,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="街道/乡镇">
+                    <el-form-item label="街道/乡镇" prop="street">
                       <el-select
                         clearable
                         filterable
@@ -992,7 +992,7 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="12">
-                    <el-form-item class="noBR" label="社区/村">
+                    <el-form-item class="noBR" label="社区/村" prop="plots">
                       <el-select
                         clearable
                         filterable
@@ -1062,7 +1062,7 @@
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-form-item label="地上层数">
+                    <el-form-item label="地上层数" prop="upperNumber">
                       <el-input
                         v-model="ruleForm.upperNumber"
                         :disabled="userInfo.state == 1"
@@ -1102,157 +1102,6 @@
                 </el-row>
               </el-form>
             </div>
-            <!-- 就学信息采集表 -->
-            <!-- <div v-if="userInfo.index==5">
-              <el-form :model="ruleForm" ref="ruleForm" :rules="rules">
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="姓名" prop="name">
-                      <el-input
-                        v-model="ruleForm.name"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入姓名（必填）'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item class="noBR" prop="idCard" label="身份证号码">
-                      <el-input
-                        v-model="ruleForm.idCard"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入身份证号码（必填）'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item prop="phone" label="电话号码">
-                      <el-input
-                        v-model="ruleForm.phone"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入电话号码（必填）'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item class="noBR" prop="studyTime" label="入学时间">
-                      <el-date-picker
-                        :disabled="userInfo.state == 1"
-                        v-model="ruleForm.studyTime"
-                        type="date"
-                        value-format="yyyy-MM-dd"
-                        :placeholder="userInfo.state == 1?'':'请选择入学时间（必填）'"
-                      ></el-date-picker>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="就读时限">
-                      <el-input
-                        v-model="ruleForm.time"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入就读时限'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item class="noBR" label="年级">
-                      <el-input
-                        v-model="ruleForm.grade"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入年级'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="班级">
-                      <el-input
-                        v-model="ruleForm.bclass"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入班级'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item class="noBR" label="学号">
-                      <el-input
-                        v-model="ruleForm.student"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入学号'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item prop="police" label="居住地派出所">
-                      <el-select
-                        v-model="ruleForm.police"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请选择居住地派出所（必填）'"
-                      >
-                        <el-option
-                          v-for="item in policeList"
-                          :key="item.deptId"
-                          :label="item.deptName"
-                          :value="item.deptId"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item class="noBR" prop="address" label="居住地址">
-                      <el-input
-                        v-model="ruleForm.address"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入居住地址（必填）'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item class="noBB" label="备注">
-                      <el-input
-                        v-model="ruleForm.remarks"
-                        :disabled="userInfo.state == 1"
-                        :placeholder="userInfo.state == 1?'':'请输入备注'"
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item class="noBR noBB" label="是否就学且居住">
-                      <el-select
-                        :disabled="userInfo.state == 1"
-                        v-model="ruleForm.isLive"
-                        :placeholder="userInfo.state == 1?'':'请选择'"
-                      >
-                        <el-option
-                          v-for="item in whether"
-                          :key="item.value"
-                          :label="item.lable"
-                          :value="item.value"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </el-form>
-              <ul class="YBSS-notice-list">
-                <li class="list-item-title">说明</li>
-                <li class="list-item">1、请严格按表中项目采集信息；</li>
-                <li
-                  class="list-item"
-                >2、每个县（市、区）最少抽查10户实有房屋，采集居住人口30人的基本信息，其中城区（关）派出所最少6户18人，城郊结合部派出所最少4户12人；</li>
-                <li
-                  class="list-item"
-                >3、入户抽查时所抽人员必须入住1个月以上，应采集该项户所有成员信息（包括户籍人口与实际居住的非户籍人口），并在“居住状态说明”栏目中注明该人应予以明确的居住状态，在“人员关系”栏目中注明本人、配偶、子女、其他等关系。</li>
-              </ul>
-            </div>-->
           </div>
           <div class="ybss-footer-btn" v-if="userInfo.state==0||userInfo.state==2">
             <el-button type="primary" @click="submitForm('ruleForm')">提 交</el-button>
@@ -1316,8 +1165,32 @@ export default {
   mounted() {},
   methods: {
     submitForm(formName) {
+      let index = this.userInfo.index;
+      let data = this.ruleForm;
       this.$refs[formName].validate(valid => {
         if (valid) {
+          //产权单位，产权性质为公有时不能为空
+          if (index == 0 && data.type == "1" && !data.legalName) {
+            this.$message({
+              message: "请填写产权单位",
+              type: "warning"
+            });
+            return false;
+          }
+          //街路巷,门牌号,小区名称,楼栋详址中至少一项
+          if (
+            (index == 0 || index == 2 || index == 4) &&
+            (!data.road &&
+              !data.houseNumber &&
+              !data.community &&
+              !data.address)
+          ) {
+            this.$message({
+              message: "请填写街路巷,门牌号,小区名称,楼栋详址中至少一项",
+              type: "warning"
+            });
+            return false;
+          }
           this.postRuleForm();
         } else {
           this.$message({

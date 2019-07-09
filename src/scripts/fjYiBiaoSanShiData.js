@@ -130,10 +130,16 @@ export default {
         plots: [
             { required: true, message: "请选择社区/村", trigger: "change" }
         ],
+        companyType: [
+            { required: true, message: "请选择单位类别", trigger: "change" }
+        ],
         road: [{ required: true, message: "请输入街路巷", trigger: "blur" }],
         license: [{ required: true, message: "请输入组织机构代码/营业执照号", trigger: "blur" }],
         houseNumber: [
             { required: true, message: "请输入门牌号", trigger: "blur" }
+        ],
+        companyPhone: [
+            { required: true, message: "请输入单位电话", trigger: "blur" }
         ],
         community: [
             { required: true, message: "请输入小区（组）", trigger: "blur" }
@@ -162,8 +168,30 @@ export default {
             { validator: validateIdCard /* ,trigger:'change' */ }
         ],
         jobTime: [
-            { required: true, message: "请输入入职时间", trigger: "change" }
+            { required: true, message: "请选择入职时间", trigger: "change" }
         ],
+        nation: [
+            { required: true, message: "请选择民族", trigger: "change" }
+        ],
+        time: [
+            { required: true, message: "请选择时间", trigger: "change" }
+        ],
+        rent: [
+            { required: true, message: "请选择是否出租房屋", trigger: "change" }
+        ],
+        marital: [
+            { required: true, message: "请选择婚姻状态", trigger: "change" }
+        ],
+        education: [
+            { required: true, message: "请选择文化程度", trigger: "change" }
+        ],
+        houseType: [
+            { required: true, message: "请选择房屋类别", trigger: "change" }
+        ],
+        type: [
+            { required: true, message: "请选择产权类型", trigger: "change" }
+        ],
+        houseName: [{ required: true, message: "请输入房主姓名", trigger: "blur" }],
         rpr: [{ required: true, message: "请输入户籍地址", trigger: "blur" }],
         presentAddress: [
             { required: true, message: "请输入现住地址", trigger: "blur" }
@@ -179,6 +207,9 @@ export default {
         ],
         police: [
             { required: true, message: "请输入居住地派出所", trigger: "blur" }
+        ],
+        upperNumber: [
+            { required: true, message: "请输入地上层数", trigger: "blur" }
         ],
         studyTime: [
             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
