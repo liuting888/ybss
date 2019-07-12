@@ -1064,7 +1064,9 @@
                   <el-col :span="12">
                     <el-form-item label="地上层数" prop="upperNumber">
                       <el-input
+                        type="number"
                         v-model="ruleForm.upperNumber"
+                        oninput="if(value>999)value=999"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请输入地上层数'"
                       ></el-input>
@@ -1073,7 +1075,9 @@
                   <el-col :span="12">
                     <el-form-item class="noBR" label="地下层数">
                       <el-input
+                        type="number"
                         v-model="ruleForm.underNumber"
+                        oninput="if(value>999)value=999"
                         :disabled="userInfo.state == 1"
                         :placeholder="userInfo.state == 1?'':'请输入地下层数'"
                       ></el-input>

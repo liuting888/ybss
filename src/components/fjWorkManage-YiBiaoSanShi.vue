@@ -110,7 +110,7 @@
           class="add-list-btn"
           v-if="userInfo.userRole==1000"
           @click="goDetails(0)"
-        >+ 添加{{activeList[activeIndex].name}}</div>-->
+        >+ 添加{{activeList[activeIndex].name}}</div> -->
         <!-- table -->
         <el-table :data="tableDataList" style="width: 100%" class="el-tables">
           <el-table-column label="信息类型">
