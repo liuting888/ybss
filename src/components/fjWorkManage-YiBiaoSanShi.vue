@@ -26,12 +26,13 @@
                     filterable
                     v-model="searchForm.deptBelongId"
                     size="small"
+                    :disabled="userInfo.userRole<8000"
                   >
                     <el-option
                       v-for="item in supDeptIds"
                       :key="item.deptid"
-                      :label="item.deptname"
-                      :value="item.deptid"
+                      :label="item.deptName"
+                      :value="item.deptId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -110,7 +111,7 @@
           class="add-list-btn"
           v-if="userInfo.userRole==1000"
           @click="goDetails(0)"
-        >+ 添加{{activeList[activeIndex].name}}</div> -->
+        >+ 添加{{activeList[activeIndex].name}}</div>-->
         <!-- table -->
         <el-table :data="tableDataList" style="width: 100%" class="el-tables">
           <el-table-column label="信息类型">
@@ -340,7 +341,7 @@ export default {
     // fjPublic.closeLoad();
     // 初始化任务列表
     // this.searchSign();
-    // this.initSupDeptIds();
+    this.initSupDeptIds();
     this.getTeamList();
     return;
   },
@@ -435,14 +436,16 @@ export default {
       var defer = $.Deferred();
       var vm = this;
       $.ajax({
-        url: fjPublic.ajaxUrlDNN + "/searchDeptsByFenju",
+        url: fjPublic.ajaxUrlDNN + "/searchPcsByByUserRole",
         type: "POST",
         data: {
-          parentDeptId: vm.searchForm.deptBelongId
+          nowUser: $.cookie(fjPublic.loginCookieKey), //当前登录用户对象（必传）
+          userId: "", //用户id（必传）
+          deptId: deptBelongId
         },
         dataType: "json",
         success: function(data) {
-          vm.missionStates = data.list;
+          vm.missionStates = data.rows;
           defer.resolve();
         },
         error: function(err) {
@@ -752,14 +755,18 @@ export default {
       var defer = $.Deferred();
       var vm = this;
       $.ajax({
-        url: fjPublic.ajaxUrlDNN + "/getParentDeptListByDeptId",
+        url: fjPublic.ajaxUrlDNN + "/searchGajByUserRole",
         type: "POST",
         data: {
-          deptId: vm.userInfo.deptId
+          // deptId: vm.userInfo.deptId
+          nowUser: $.cookie(fjPublic.loginCookieKey),
+          userId: ""
         },
         dataType: "json",
         success: function(data) {
-          vm.supDeptIds = data.data;
+          vm.supDeptIds = data.rows;
+          vm.userInfo.userRole < 8000 &&
+            (vm.searchForm["deptBelongId"] = data.rows[0].deptId);
           defer.resolve();
         },
         error: function(err) {
@@ -773,12 +780,16 @@ export default {
       var vm = this;
       // 参数
       $.ajax({
-        url: fjPublic.ajaxUrlDNN + "/searchDeptsByFenju",
+        url: fjPublic.ajaxUrlDNN + "/searchPcsByByUserRole",
         type: "POST",
-        data: {},
+        data: {
+          nowUser: $.cookie(fjPublic.loginCookieKey), //当前登录用户对象（必传）
+          userId: "", //用户id（必传）
+          deptId: ""
+        },
         dataType: "json",
         success: function(data) {
-          vm.missionStates = data.list;
+          vm.missionStates = data.rows;
         },
         error: function(err) {}
       });
